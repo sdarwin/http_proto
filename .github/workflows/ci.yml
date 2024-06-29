@@ -1084,3 +1084,52 @@ jobs:
         with:
           name: antora-docs
           path: doc/build/site
+
+  antora-test:
+    name: Antora Docs Test
+    needs: [ runner-selection ]
+    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)['ubuntu-22.04'] }}
+    steps:
+      - name: Clone Http.Proto
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.2
+        id: setup-cpp
+        with:
+          compiler: clang
+          version: 14
+
+      - name: Build Antora Docs
+        run: |
+          cd doc
+          bash ./build_antora.sh
+
+  antora-test2:
+    name: Antora Docs Test 2
+    needs: [ runner-selection ]
+    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)['ubuntu-20.04'] }}
+    steps:
+      - name: Clone Http.Proto
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.2
+        id: setup-cpp
+        with:
+          compiler: clang
+          version: 17
+
+      - name: Build Antora Docs
+        run: |
+          cd doc
+          bash ./build_antora.sh
+
